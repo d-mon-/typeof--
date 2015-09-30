@@ -1,0 +1,25 @@
+{
+  "name": "typeof--",
+  "version": "1.0.1",
+  "description": "typeof-in: light version",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/typeOf-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-mon-/typeof--.git"
+  },
+  "keywords": [
+    "typeof",
+    "type",
+    "of",
+    "assert"
+  ],
+  "author": "Guerin olivier <guerin.olivier@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d-mon-/typeof--/issues"
+  },
+  "homepage": "https://github.com/d-mon-/typeof--#readme"
+}

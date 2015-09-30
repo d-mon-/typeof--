@@ -8,13 +8,19 @@ typeof-in: light version
 >
 > null **instanceof** Object === **false**
 
-null shouldn't be an object, and even if it is in JS, it is not an instance of Object.
+null shouldn't be an object... And even if it is the case in JS, null is not an instance of Object...
 
 > **typeof** /regularexpression/ **===** 'object'
 
-every type I see this line, I would expect *'regexp'*
+every time I see this line, I would expect *'regexp'*
 
-**new** Number(42) and 42 have the same constructor name, but are completely different. (String and Boolean have the same "problem")
+**new** Number(42) and 42 have the same constructor name, but doesn't have the same type:
+
+- one is an object
+
+- the other one is a primitive value: number
+
+(String and Boolean have the same "problem")
 
 > **typeof** NaN **===** 'number'
 
@@ -22,7 +28,7 @@ Quite famous, but still incoherent.
 
 > **typeof** new Number(NaN) **===** 'object'
 
-and this one doesn't help more the case of NaN...
+and this one doesn't improve the case of NaN...
 
 and some more...
 
@@ -72,6 +78,8 @@ var MyAnonymousClass = function(){};
 typeOf(new MyAnonymousClass()) === '#Anonymous'
 //you might want to use instanceof here
 ```
+
+you might be interested in the [typeof-in library](https://www.npmjs.com/package/typeof-in)
 
 I'm open to any suggestions.
 
