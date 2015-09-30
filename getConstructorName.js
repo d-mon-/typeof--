@@ -4,14 +4,13 @@
  */
 module.exports = function (value) {
     var _constructor = value.constructor;
-    var anonymous = '#Anonymous';
     if (_constructor !== undefined) {
         if (_constructor.name !== undefined) {
-            return _constructor.name || anonymous;
+            return _constructor.name || '#Anonymous';
         } else {
             var cons_str = _constructor.toString(), index = cons_str.indexOf('(', 9);
-            return (index === 9) ? anonymous : cons_str.slice(9, index);
+            return (index === 9) ? '#Anonymous' : cons_str.slice(9, index);
         }
     }
-    return Object.prototype.toString.call(value).slice(8, -1) || anonymous;
+    return Object.prototype.toString.call(value).slice(8, -1);
 };
