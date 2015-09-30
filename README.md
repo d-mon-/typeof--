@@ -79,7 +79,7 @@ typeOf(new MyAnonymousClass()) === '#Anonymous'
 //you might want to use instanceof here
 ```
 
-you might be interested in the [typeof-in library](https://www.npmjs.com/package/typeof-in)
+you might be interested with the [typeof-in library](https://www.npmjs.com/package/typeof-in)
 
 I'm open to any suggestions.
 
