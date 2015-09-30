@@ -13,6 +13,15 @@ const getConstructorName = require('./getConstructorName');
 module.exports = function typeOf(value) {
     if (value === undefined) return 'Undefined'; //undefined values are more likely to happen than null and NaN
     if (value === null) return 'Null';
-    if ((typeof value === "number" || value instanceof Number) && isNaN(value)) return "NaN";
-    return getConstructorName(value);
+
+    var type = getConstructorName(value);
+
+    if (type === 'Number' && isNaN(value)) return "NaN";
+    if (type === 'Object') {
+        var _type = Object.prototype.toString.call(value);
+        if (_type !== "[object Object]") {
+            return _type.slice(8, -1)
+        }
+    }
+    return type;
 };

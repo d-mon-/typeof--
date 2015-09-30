@@ -71,12 +71,17 @@ typeOf(new TypeError()) === 'TypeError'
 typeOf(new Date()) === 'Date'
 // ...
 
+
+
+
 function MyOwnClass(){}
 typeOf(new MyOwnClass())==='MyOwnClass'
 
 var MyAnonymousClass = function(){}; 
 typeOf(new MyAnonymousClass()) === '#Anonymous'
 //you might want to use instanceof here
+
+typeOf((function(){ return arguments })()) === 'Arguments'
 ```
 
 you might be interested with the [typeof-in library](https://www.npmjs.com/package/typeof-in)

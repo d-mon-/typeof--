@@ -127,6 +127,7 @@ log(new MyAnonymousClass() , '#Anonymous');
 //#special
 log(new(function $(){}), '$');
 log(new(function _(){}), '_');
+log((function(){ return arguments })(), 'Arguments');
 log(JSON,'JSON');
 log(Math,'Math');
 
