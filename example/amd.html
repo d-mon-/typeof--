@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test amd implementation</title>
+    <script src="../node_modules/requirejs/require.js"></script>
+    <script>
+        require.config({
+            baseUrl: "/",
+            paths: {
+                'typeOf':'./index'
+            }
+        });
+        requirejs(['typeOf'], function(typeOf) {
+            console.log(typeOf(42)==='Number');
+            console.log(typeOf(42)==='String');
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

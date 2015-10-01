@@ -1,38 +1,74 @@
 # typeof--
 typeof-in: light version
 
-## Why use *typeof--* ? 
-#### JS is, somehow, broken
+# Usage:
 
-> **typeof** null **===** 'object'
->
-> null **instanceof** Object === **false**
+```js
+var typeOf = require('typeof--');
 
-null shouldn't be an object... And even if it is the case in JS, null is not an instance of Object...
+console.log(typeOf('lolipop')) // 'String'
+console.log(typeOf(42)) //  'Number'
+console.log(typeOf(false) === 'Boolean'
+console.log(typeOf(/myRegExp/)) // 'RegExp'
 
-> **typeof** /regularexpression/ **===** 'object'
+console.log(typeOf(null) === 'Null'
+console.log(typeOf(undefined)) // 'Undefined'
+console.log(typeOf(NaN)) // 'NaN'
 
+console.log(typeOf([])) // 'Array'
+console.log(typeOf({})) // 'Object'
+
+console.log(typeOf(new TypeError())) // 'TypeError'
+
+console.log(typeOf(Math)) // 'Math'
+
+// and so on ...
+
+
+function MyOwnClass(){}
+var myOwnInstance = new MyOwnClass()
+console.log(typeOf(myOwnInstance)) // 'MyOwnClass'
+
+myOwnInstance.constructor = undefined;
+console.log(typeOf(myOwnInstance)) // 'Object'
+
+var MyAnonymousClass = function(){}; 
+console.log(typeOf(new MyAnonymousClass())) // '#Anonymous', you might prefer to use instanceof here.
+
+console.log(typeOf((function(){ return arguments })()) ) // 'Arguments'
+```
+
+
+
+# Why use *typeof--* ? 
+## JS is, somehow, broken
+```js
+console.log(typeof null) // 'object'
+console.log(null instanceof Object) //false
+``` 
+null shouldn't be an object... And even if it is the case in JavaScript, null is not even an instance of Object...
+
+```js
+console.log(typeof /regularexpression/) // 'object'
+```
 every time I see this line, I would expect *'regexp'*
 
-**new** Number(42) and 42 have the same constructor name, but doesn't have the same type:
-
-- one is an object
-
-- the other one is a primitive value: number
-
+```js
+console.log(typeof new Number(42)) //'object'
+console.log(typeof 42) //'number'
+```
+new Number(42) and 42 have the same constructor name, but doesn't have the same type...
 (String and Boolean have the same "problem")
 
-> **typeof** NaN **===** 'number'
-
-Quite famous, but still incoherent.
-
-> **typeof** new Number(NaN) **===** 'object'
-
-and this one doesn't improve the case of NaN...
+```js
+console.log(typeof NaN) //'number'
+console.log(typeof new Number(NaN)) //'object'
+```
+And one of the most famous example in JS is NaN (a.K.a Not A Number) which return a type of number...
 
 and some more...
 
-#### typeof-- overview:
+## typeof-- overview:
 
 all the type returned by typeof-- are strings
 
@@ -40,51 +76,62 @@ all the type returned by typeof-- are strings
 
 **String**, **Number** and **Boolean** return the exact same type whether it's an object or a primitive value.
 
-Because, all *objects* return their **own constructor.name**
+All *objects* return their **own constructor.name**.
 
-(except: null, NaN, built-in objects and all instances of an **anonymous prototype**, which return **'#Anonymous'**)
+If no constructor can be found, the algorithm will call *Object.prototype.toString()* on the value.
 
-And finally, built-in object like **Math** and **JSON** return their **own name**.
+An Instance of an anonymous constructor will return #Anonymous.
 
-#### example
+And finally, built-in object like **Math** and **JSON** will return their **own name**.
 
+
+|                **values**               |      **types**      |
+|:---------------------------------------:|:-------------------:|
+|                    42                   |       'Number'      |
+|              new Number(42)             |       'Number'      |
+|                'lolipop'                |       'String'      |
+|          new String('lolipop')          |       'String'      |
+|                   true                  |      'Boolean'      |
+|            new Boolean(true)            |      'Boolean'      |
+|                /myRegExp/               |       'RegExp'      |
+|          new RegExp(/myRegExp/)         |       'RegExp'      |
+|                   null                  |        'Null'       |
+|                undefined                |     'Undefined'     |
+|                   NaN                   |        'NaN'        |
+|            new Number('NaN')            |        'NaN'        |
+|                    []                   |       'Array'       |
+|               new Array()               |       'Array'       |
+|                    {}                   |       'Object'      |
+|               new Object()              |       'Object'      |
+|               new Error()               |       'Error'       |
+|             new TypeError()             |     'TypeError'     |
+|                new Date()               |        'Date'       |
+|                  Object                 |      'Function'     |
+|               function(){}              |      'Function'     |
+|       new (function MyKlass(){})()      |      'MyKlass'      |
+|           new (function(){})()          |     '#Anonymous'    |
+| [global] Math                           |        'Math'       |
+| [global] JSON                           |        'JSON'       |
+| [ES6:promise] new Promise(function(){}) |      'Promise'      |
+| [ES6:generator] function*(){}           | 'GeneratorFunction' |
+| [ES6:Symbol] Symbol('foo')              |       'Symbol'      |
+| [ES6:fat arrow] ()=>{}                  |      'Function'     |
+
+# with requireJS (AMD)
 ```js
-var typeOf = require('typeof--');
-
-typeOf('lolipop') === typeOf(new String('lolipop')) // === 'String'
-typeOf(42) === typeOf(new Number(42)) // === 'Number'
-typeOf(false) === typeOf(new Boolean(true)) // === 'Boolean'
-typeOf(/myRegExp/) === typeOf(new RegExp(/myRegExp/)) // === 'RegExp'
-
-typeOf(null) === 'Null'
-typeOf(undefined) === 'Undefined'
-typeOf(NaN) === 'NaN'
-typeOf(new Number(NaN)) === 'NaN'
-
-typeOf([]) === typeOf(new Array()) // === 'Array'
-typeOf({}) === typeOf(new Object()) // === 'Object'
-
-typeOf(new Promise(function () {}) === 'Promise'
-typeOf(Promise) === 'Function'
-typeOf(new Error()) === 'Error'
-typeOf(new TypeError()) === 'TypeError'
-typeOf(new Date()) === 'Date'
-// ...
-
-
-
-
-function MyOwnClass(){}
-typeOf(new MyOwnClass())==='MyOwnClass'
-
-var MyAnonymousClass = function(){}; 
-typeOf(new MyAnonymousClass()) === '#Anonymous'
-//you might want to use instanceof here
-
-typeOf((function(){ return arguments })()) === 'Arguments'
+require.config({
+    baseUrl: "/",
+    paths: {
+        'typeOf':'./index'
+    }
+});
+requirejs(['typeOf'], function(typeOf) {
+    console.log(typeOf(42)==='Number');
+    console.log(typeOf(42)==='String');
+});
 ```
 
-you might be interested with the [typeof-in library](https://www.npmjs.com/package/typeof-in)
+you might also be interested with the [typeof-in library](https://www.npmjs.com/package/typeof-in)
 
 I'm open to any suggestions.
 
