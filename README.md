@@ -8,10 +8,10 @@ var typeOf = require('typeof--');
 
 console.log(typeOf('lolipop')) // 'String'
 console.log(typeOf(42)) //  'Number'
-console.log(typeOf(false) === 'Boolean'
+console.log(typeOf(false)) // 'Boolean'
 console.log(typeOf(/myRegExp/)) // 'RegExp'
 
-console.log(typeOf(null) === 'Null'
+console.log(typeOf(null)) // 'Null'
 console.log(typeOf(undefined)) // 'Undefined'
 console.log(typeOf(NaN)) // 'NaN'
 
@@ -122,7 +122,7 @@ And finally, built-in object like **Math** and **JSON** will return their **own 
 require.config({
     baseUrl: "/",
     paths: {
-        'typeOf':'./index'
+        'typeOf':'./typeof--/index'
     }
 });
 requirejs(['typeOf'], function(typeOf) {
@@ -130,9 +130,10 @@ requirejs(['typeOf'], function(typeOf) {
     console.log(typeOf(42)==='String');
 });
 ```
+[see the following example](https://github.com/d-mon-/typeof--/tree/master/example)
 
 you might also be interested with the [typeof-in library](https://www.npmjs.com/package/typeof-in)
 
-I'm open to any suggestions.
+Finally, I'm open to any suggestions.
 
 
