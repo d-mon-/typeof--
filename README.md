@@ -1,8 +1,8 @@
 # typeof--
 typeof-in: light version
 
+**Consider using [lodash](https://lodash.com) or [kind-of](https://www.npmjs.com/package/kind-of) first!**
 # Usage:
-
 ```js
 var typeOf = require('typeof--');
 
