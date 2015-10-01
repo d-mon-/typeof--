@@ -8,14 +8,16 @@ const typeOf = require('../index');
 var count=0,total=0;
 
 function log(value, expect) {
+    /*if(value !== null && value !== undefined && typeof value === 'object' ){
+        value.constructor = undefined;
+    }*/
     let _type = typeOf(value);
     let _r = _type === expect;
     if (_r) {
         console.log('ok :', _type, '==>', expect);
         count++;
     } else {
-        console.log('not ok :', _type, '==>', expect);
-        console.log(value);
+        console.log('not ok :', _type, '==>', expect, '#ERROR:', value);
     }
     total++;
 }
@@ -104,7 +106,9 @@ log(new TypeError(), 'TypeError');
 //#map/set
 try {
     log(new Map(), 'Map');
+    log(new WeakMap(), 'WeakMap');
     log(new Set(), 'Set');
+    log(new WeakSet(), 'WeakSet');
 } catch (err) {
     console.log(err.message, '-> SKIP')
 }

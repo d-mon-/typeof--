@@ -25,8 +25,8 @@
         function typeOf(value) {
             if (value === undefined) return 'Undefined';
             if (value === null) return 'Null';
-            var _constructor = value.__proto__.constructor, type;
-            if (typeof _constructor === 'function') {
+            var _constructor = value.constructor, type;
+            if (typeof _constructor === 'function' && value instanceof _constructor) {
                 if (_constructor.name !== undefined) {
                     type = _constructor.name || '#Anonymous';
                 } else {

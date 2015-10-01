@@ -39,7 +39,6 @@ console.log(typeOf((function(){ return arguments })()) ) // 'Arguments'
 ```
 
 
-
 # Why use *typeof--* ? 
 ## JS is, somehow, broken
 ```js
@@ -76,7 +75,7 @@ all the type returned by typeof-- are strings
 
 **String**, **Number** and **Boolean** return the exact same type whether it's an object or a primitive value.
 
-All *objects* return their **own constructor.name**.
+All *objects* return their **own constructor.name** (you are now advised!).
 
 If no constructor can be found, the algorithm will call *Object.prototype.toString()* on the value.
 
@@ -84,8 +83,9 @@ An Instance of an anonymous constructor will return #Anonymous.
 
 And finally, built-in object like **Math** and **JSON** will return their **own name**.
 
-
-|                **values**               |      **types**      |  **no constructor** |
+### tables of common values
+##### and their type returned by typeOf(value)
+|                **values**               |      **types**      |  **corrupted constructor** |
 |:---------------------------------------:|:-------------------:|:-------------------:|
 |                    42                   |       'Number'      |       'Number'      | 
 |              new Number(42)             |       'Number'      |       'Number'      | 
@@ -105,17 +105,48 @@ And finally, built-in object like **Math** and **JSON** will return their **own 
 |               new Object()              |       'Object'      |       'Object'      |
 |               new Error()               |       'Error'       |       'Error'       |
 |             new TypeError()             |     'TypeError'     |     **'Error'**     |
+|               new Map()                 |        'Map'        |        'Map'        |
+|             new WeakMap()               |       'WeakMap'     |       'WeakMap'     |
 |                new Date()               |        'Date'       |        'Date'       |
 |                  Object                 |      'Function'     |      'Function'     |
 |               function(){}              |      'Function'     |      'Function'     |
 |       new (function MyKlass(){})()      |      'MyKlass'      |     **'Object'**    |
 |           new (function(){})()          |     '#Anonymous'    |     **'Object'**    |
+|    (function(){ return arguments })()   |      'Arguments'    |      'Arguments'    | 
 | [global] Math                           |        'Math'       |        'Math'       |
 | [global] JSON                           |        'JSON'       |        'JSON'       |
 | [ES6:promise] new Promise(function(){}) |      'Promise'      |     **'Object'**    |
-| [ES6:generator] function*(){}           | 'GeneratorFunction' |    **'Function'**   |
+| [ES6:generator] function*(){}           | 'GeneratorFunction' | 'GeneratorFunction' |
 | [ES6:Symbol] Symbol('foo')              |       'Symbol'      |       'Symbol'      |
 | [ES6:fat arrow] ()=>{}                  |      'Function'     |      'Function'     |
+the test was made on node.js >= v4.0.0
+
+## Important
+
+typeof-- uses **constructor(.name)** when possible, and is therefore influenced by the change of the constructor function!
+
+Which imply that: an object "A" deriving from another object "B" will have the constructor of "B" and not "A", you can avoid this problem by using Object.assign, _.assign or _.extend...
+
+Moreover, any change on the constructor will modify the type returned (cf: See the table above).
+
+```js
+function Example(){}
+var test = new Example()
+test.constructor = function hacked(); //undefined or null
+console.log(typeOf(test)) //'Object'
+```
+
+To avoid such problem, use **instanceof**. Or you can also use the following library [typeof-in](https://www.npmjs.com/package/typeof-in)
+```js
+var typeOf = require('typeof-in')
+var test1 = 'test'
+test1.constructor = function hacked(){}; //doesn't work, you can't change the constructor of a primitive value
+typeOf('test').in(String) //return true: compare 'test' with 'String'
+
+test2 = new String('test');
+test.constructor = function hacked(){} //typeOf(test).getType() will return 'hacked'
+typeOf(test).in(String) //true
+```
 
 # with requireJS (AMD)
 ```js
