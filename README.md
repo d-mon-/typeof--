@@ -85,37 +85,37 @@ An Instance of an anonymous constructor will return #Anonymous.
 And finally, built-in object like **Math** and **JSON** will return their **own name**.
 
 
-|                **values**               |      **types**      |
-|:---------------------------------------:|:-------------------:|
-|                    42                   |       'Number'      |
-|              new Number(42)             |       'Number'      |
-|                'lolipop'                |       'String'      |
-|          new String('lolipop')          |       'String'      |
-|                   true                  |      'Boolean'      |
-|            new Boolean(true)            |      'Boolean'      |
-|                /myRegExp/               |       'RegExp'      |
-|          new RegExp(/myRegExp/)         |       'RegExp'      |
-|                   null                  |        'Null'       |
-|                undefined                |     'Undefined'     |
-|                   NaN                   |        'NaN'        |
-|            new Number('NaN')            |        'NaN'        |
-|                    []                   |       'Array'       |
-|               new Array()               |       'Array'       |
-|                    {}                   |       'Object'      |
-|               new Object()              |       'Object'      |
-|               new Error()               |       'Error'       |
-|             new TypeError()             |     'TypeError'     |
-|                new Date()               |        'Date'       |
-|                  Object                 |      'Function'     |
-|               function(){}              |      'Function'     |
-|       new (function MyKlass(){})()      |      'MyKlass'      |
-|           new (function(){})()          |     '#Anonymous'    |
-| [global] Math                           |        'Math'       |
-| [global] JSON                           |        'JSON'       |
-| [ES6:promise] new Promise(function(){}) |      'Promise'      |
-| [ES6:generator] function*(){}           | 'GeneratorFunction' |
-| [ES6:Symbol] Symbol('foo')              |       'Symbol'      |
-| [ES6:fat arrow] ()=>{}                  |      'Function'     |
+|                **values**               |      **types**      |  **no constructor** |
+|:---------------------------------------:|:-------------------:|:-------------------:|
+|                    42                   |       'Number'      |       'Number'      | 
+|              new Number(42)             |       'Number'      |       'Number'      | 
+|                'lolipop'                |       'String'      |       'String'      |
+|          new String('lolipop')          |       'String'      |       'String'      |
+|                   true                  |      'Boolean'      |      'Boolean'      |
+|            new Boolean(true)            |      'Boolean'      |      'Boolean'      |
+|                /myRegExp/               |       'RegExp'      |       'RegExp'      |
+|          new RegExp(/myRegExp/)         |       'RegExp'      |       'RegExp'      |
+|                   null                  |        'Null'       |        'Null'       |
+|                undefined                |     'Undefined'     |     'Undefined'     |
+|                   NaN                   |        'NaN'        |        'NaN'        |
+|            new Number('NaN')            |        'NaN'        |        'NaN'        |
+|                    []                   |       'Array'       |       'Array'       |
+|               new Array()               |       'Array'       |       'Array'       |
+|                    {}                   |       'Object'      |       'Object'      |
+|               new Object()              |       'Object'      |       'Object'      |
+|               new Error()               |       'Error'       |       'Error'       |
+|             new TypeError()             |     'TypeError'     |     **'Error'**     |
+|                new Date()               |        'Date'       |        'Date'       |
+|                  Object                 |      'Function'     |      'Function'     |
+|               function(){}              |      'Function'     |      'Function'     |
+|       new (function MyKlass(){})()      |      'MyKlass'      |     **'Object'**    |
+|           new (function(){})()          |     '#Anonymous'    |     **'Object'**    |
+| [global] Math                           |        'Math'       |        'Math'       |
+| [global] JSON                           |        'JSON'       |        'JSON'       |
+| [ES6:promise] new Promise(function(){}) |      'Promise'      |     **'Object'**    |
+| [ES6:generator] function*(){}           | 'GeneratorFunction' |    **'Function'**   |
+| [ES6:Symbol] Symbol('foo')              |       'Symbol'      |       'Symbol'      |
+| [ES6:fat arrow] ()=>{}                  |      'Function'     |      'Function'     |
 
 # with requireJS (AMD)
 ```js

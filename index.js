@@ -2,8 +2,7 @@
  * Created by GUERIN Olivier, on 30/09/2015.
  * Twitter: @MisterRaton
  */
-;
-(function (factory) {
+;(function (factory) {
         if (typeof exports !== 'undefined') {
             if (typeof module !== 'undefined' && module.exports) {
                 exports = module.exports = factory();
@@ -26,7 +25,7 @@
         function typeOf(value) {
             if (value === undefined) return 'Undefined';
             if (value === null) return 'Null';
-            var _constructor = value.constructor, type;
+            var _constructor = value.__proto__.constructor, type;
             if (typeof _constructor === 'function') {
                 if (_constructor.name !== undefined) {
                     type = _constructor.name || '#Anonymous';
@@ -53,7 +52,7 @@
             } else {
                 type = toString.call(value).slice(8, -1);
             }
-            if (type === 'Number' && value !== +value) {
+            if (type === 'Number' && value != +value) {
                 return "NaN";
             }
             return type;
