@@ -39,28 +39,27 @@
                 }
                 if (type === 'Object') { //handle built-in object like JSON and Math
                     var _type = toString.call(value);
-                    if(_type === "[object Object]"){
+                    if (_type === "[object Object]") {
                         return type;
-                    }else{
-                        if(_type === "[object Math]"){
-                            return 'Math';
-                        }
-                        if(_type === "[object JSON"){
-                            return 'JSON';
-                        }
-                        return _type.slice(8, -1);
                     }
+                    if (_type === "[object Math]") {
+                        return 'Math';
+                    }
+                    if (_type === "[object JSON") {
+                        return 'JSON';
+                    }
+                    return _type.slice(8, -1);
                 }
             } else {
-                type = toString.call(value).slice(8,-1);
+                type = toString.call(value).slice(8, -1);
             }
             if (type === 'Number' && value !== +value) {
                 return "NaN";
             }
             return type;
         }
-
         return typeOf;
     })
-);
+)
+;
 
