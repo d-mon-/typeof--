@@ -32,7 +32,7 @@
                 _constructor = value.constructor;
             } else if (typeof Object.getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
                 var _prototype = (Object.getPrototypeOf(value));
-                if (typeof _prototype === 'object' && typeof _prototype.constructor ==='function' && value instanceof _prototype.constructor) {
+                if (_prototype && typeof _prototype.constructor ==='function' && value instanceof _prototype.constructor) {
                     _constructor = _prototype.constructor;
                 }
             }
