@@ -28,11 +28,11 @@
             if (value === null) return 'Null';
             var _constructor, type;
 
-            if (typeof value.constructor === 'function' && value instanceof value.constructor) {
+            if (typeof value.constructor === 'function' && (typeof value !== 'object' || value instanceof value.constructor)) {
                 _constructor = value.constructor;
             } else if (typeof Object.getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
                 var _prototype = (Object.getPrototypeOf(value));
-                if (_prototype && typeof _prototype.constructor ==='function' && value instanceof _prototype.constructor) {
+                if (typeof _prototype === 'object' && typeof _prototype.constructor ==='function' && value instanceof _prototype.constructor) {
                     _constructor = _prototype.constructor;
                 }
             }
@@ -71,6 +71,4 @@
 
         return typeOf;
     })
-)
-;
-
+);
