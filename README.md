@@ -138,14 +138,21 @@ console.log(typeOf(test)) //'Object'
 
 To avoid such problem, use **instanceof**. Or you can also use the following library [typeof-in](https://www.npmjs.com/package/typeof-in)
 ```js
-var typeOf = require('typeof-in')
-var test1 = 'test'
-test1.constructor = function hacked(){}; //doesn't work, you can't change the constructor of a primitive value
-typeOf('test').in(String) //return true: compare 'test' with 'String'
+var typeOf = require('typeof-in');
 
-test2 = new String('test');
+function Example(){};
+
+var test1 = new Example('test');
+typeOf(test).in('Example') //true
+typeOf(test).in('Object')  //true
+typeOf(test).in(Example)   //true
+typeOf(test).in(Object)    //true
+
 test.constructor = function hacked(){} //typeOf(test).getType() will return 'hacked'
-typeOf(test).in(String) //true
+typeOf(test).in('Example') //false
+typeOf(test).in('Object')  //true
+typeOf(test).in(Example)   //true
+typeOf(test).in(Object)    //true
 ```
 
 # with requireJS (AMD)
