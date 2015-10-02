@@ -2,7 +2,8 @@
  * Created by GUERIN Olivier, on 30/09/2015.
  * Twitter: @MisterRaton
  */
-;(function (factory) {
+;
+(function (factory) {
         if (typeof exports !== 'undefined') {
             if (typeof module !== 'undefined' && module.exports) {
                 exports = module.exports = factory();
@@ -25,11 +26,20 @@
         function typeOf(value) {
             if (value === undefined) return 'Undefined';
             if (value === null) return 'Null';
-            var _constructor = value.constructor, type;
-            if (typeof _constructor === 'function' && value instanceof _constructor) {
+            var _constructor, type;
+
+            if (typeof value.constructor === 'function' && value instanceof value.constructor) {
+                _constructor = value.constructor;
+            } else if (typeof Object.getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
+                var __constructor = Object.getPrototypeOf(value).constructor;
+                if (typeof __constructor === 'function' && value instanceof __constructor) {
+                    _constructor = __constructor;
+                }
+            }
+            if (_constructor !== undefined) {
                 if (_constructor.name !== undefined) {
                     type = _constructor.name || '#Anonymous';
-                } else {
+                } else { //pre ES6
                     var cons_str = _constructor.toString(), index = cons_str.indexOf('(', 9);
                     if (index === 9) {
                         return '#Anonymous';
@@ -47,9 +57,10 @@
                     if (_type === "[object JSON") {
                         return 'JSON';
                     }
+                    //handle other type
                     return _type.slice(8, -1);
                 }
-            } else {
+            } else { //if corrupted constructor
                 type = toString.call(value).slice(8, -1);
             }
             if (type === 'Number' && value != +value) {
@@ -57,6 +68,7 @@
             }
             return type;
         }
+
         return typeOf;
     })
 )
