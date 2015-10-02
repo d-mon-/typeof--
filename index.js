@@ -31,9 +31,9 @@
             if (typeof value.constructor === 'function' && value instanceof value.constructor) {
                 _constructor = value.constructor;
             } else if (typeof Object.getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
-                var __constructor = Object.getPrototypeOf(value).constructor;
-                if (typeof __constructor === 'function' && value instanceof __constructor) {
-                    _constructor = __constructor;
+                var _prototype = (Object.getPrototypeOf(value));
+                if (typeof _prototype === 'object' && typeof _prototype.constructor ==='function' && value instanceof _prototype.constructor) {
+                    _constructor = _prototype.constructor;
                 }
             }
             if (_constructor !== undefined) {
