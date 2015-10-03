@@ -2,8 +2,7 @@
  * Created by GUERIN Olivier, on 30/09/2015.
  * Twitter: @MisterRaton
  */
-;
-(function (factory) {
+;(function (factory) {
         if (typeof exports !== 'undefined') {
             if (typeof module !== 'undefined' && module.exports) {
                 exports = module.exports = factory();
@@ -15,7 +14,58 @@
             define(factory);
         }
     }(function () {
-        var toString = Object.prototype.toString;
+        var call = Function.prototype.call;
+        var objectToString = call.bind(Object.prototype.toString);
+        var functionToString = call.bind(Function.prototype.toString);
+        var getPrototypeOf = Object.getPrototypeOf;
+        var extract = function (value) {
+            var end_index = value.indexOf('(', 9);
+            if (9 === end_index) {
+                return '#Anonymous';
+            }
+            return value.slice(9, end_index);
+        };
+        if (functionToString(new (  function ie_proof() {})().constructor) !== functionToString(function ie_proof() {})) {
+            extract = function (value) {
+                console.log(1,value);
+                //cleaning constructor name (<IE 9)
+                var result = value.replace(/(\/\*[^\\*]*\*\/)|(\/\/.*[\n]+)|(\s)/g, '') //remove /*...*/, //... , whitespaces, ...
+                    .replace(/[^\w]*function/, '');     //remove everything before constructor name
+                var index = result.indexOf('(');
+                console.log(2,result,result.slice(0, index));
+                return result.slice(0, index);
+            }
+        }
+
+        extract = function (value) {
+            console.log(1,value);
+            //cleaning constructor name (<IE 9)
+            var result = value
+                .replace(/(\/\*(.|[\r\n])*?\*\/)|(\/\/.*\n)/g, '') //remove all comments
+                .replace(/[^\w]*function/, '')
+                .replace(/\s/g,'');
+            var index = result.indexOf('(');
+            console.log(2,result,result.slice(0, index));
+            return result.slice(0, index);
+        }
+
+        //polyfill
+        if (typeof getPrototypeOf !== 'function') { // < IE9
+            getPrototypeOf = function (value) {
+                var prototype = value.__proto__;
+                if (typeof  prototype === "object" && prototype !== null) {
+                    return prototype
+                }
+                var constructor = value.constructor;
+                if (typeof constructor === 'function') {
+                    prototype = constructor.prototype;
+                    if (typeof prototype === 'object' && prototype !== null) {
+                        return prototype;
+                    }
+                }
+                return null;
+            }
+        }
 
         /**
          * return the type/class-name of the value
@@ -26,49 +76,38 @@
         function typeOf(value) {
             if (value === undefined) return 'Undefined';
             if (value === null) return 'Null';
-            var _constructor, type;
 
-            if (typeof value.constructor === 'function' && (typeof value !== 'object' || value instanceof value.constructor)) {
-                _constructor = value.constructor;
-            } else if (typeof Object.getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
-                var _prototype = (Object.getPrototypeOf(value));
-                if (typeof _prototype === 'object' && typeof _prototype.constructor ==='function' && value instanceof _prototype.constructor) {
-                    _constructor = _prototype.constructor;
+            var constructor, type;
+
+            if (typeof value !== 'object' || (typeof value.constructor === 'function' && value instanceof value.constructor)) { //primitive values always return true, otherwise check instanceof
+                constructor = value.constructor;
+            } else if (typeof getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
+                var prototype = getPrototypeOf(value);
+                if (prototype !== null && typeof prototype.constructor === 'function' && value instanceof prototype.constructor) {
+                    constructor = prototype.constructor;
                 }
             }
-            if (_constructor !== undefined) {
-                if (_constructor.name !== undefined) {
-                    type = _constructor.name || '#Anonymous';
+
+            if (constructor !== undefined) {
+                if (constructor.name !== undefined) {
+                    type = constructor.name || '#Anonymous';
                 } else { //pre ES6
-                    var cons_str = _constructor.toString(), index = cons_str.indexOf('(', 9);
-                    if (index === 9) {
-                        return '#Anonymous';
-                    }
-                    type = cons_str.slice(9, index);
+                    type = extract(functionToString(constructor))
                 }
                 if (type === 'Object') { //handle built-in object like JSON and Math
-                    var _type = toString.call(value);
-                    if (_type === "[object Object]") {
-                        return type;
-                    }
-                    if (_type === "[object Math]") {
-                        return 'Math';
-                    }
-                    if (_type === "[object JSON") {
-                        return 'JSON';
-                    }
-                    //handle other type
-                    return _type.slice(8, -1);
+                    var objectType = objectToString(value);
+                    return (objectType === "[object Object]") ? type : objectType.slice(8, -1);
                 }
-            } else { //if corrupted constructor
-                type = toString.call(value).slice(8, -1);
+            } else { //if constructors are corrupted
+                type = objectToString(value).slice(8, -1);
             }
-            if (type === 'Number' && value != +value) {
-                return "NaN";
-            }
-            return type;
+            return (type === 'Number' && value != +value) ? 'NaN' : type;
         }
 
         return typeOf;
     })
 );
+
+
+
+

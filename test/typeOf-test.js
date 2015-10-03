@@ -11,8 +11,8 @@ function log(value, expect) {
     /*if(value !== null && value !== undefined && typeof value === 'object' ){
         value.constructor = undefined;
     }*/
-    let _type = typeOf(value);
-    let _r = _type === expect;
+    var _type = typeOf(value);
+    var _r = _type === expect;
     if (_r) {
         console.log('ok :', _type, '==>', expect);
         count++;
@@ -72,7 +72,7 @@ try {
     log(()=> {
     }, 'Function');
 } catch (err) {
-    console.log(err.message, '-> SKIP')
+    console.log(err.message, '-> SKIP');
 }
 //#generators
 try {
@@ -80,14 +80,14 @@ try {
     }, 'GeneratorFunction');
     log(new GeneratorFunction(), 'GeneratorFunction')
 } catch (err) {
-    console.log(err.message, '-> SKIP')
+    console.log(err.message, '-> SKIP');
 }
 //#Promise
 try {
     log(new Promise(function () {
     }), 'Promise');
 } catch (err) {
-    console.log(err.message, '-> SKIP')
+    console.log(err.message, '-> SKIP');
 }
 
 //#TypedArray
@@ -96,7 +96,7 @@ try {
     log(new ArrayBuffer(), 'ArrayBuffer');
     log(new DataView(new ArrayBuffer()), 'DataView');
 } catch (err) {
-    console.log(err.message, '-> SKIP')
+    console.log(err.message, '-> SKIP');
 }
 
 //#Error
@@ -110,7 +110,7 @@ try {
     log(new Set(), 'Set');
     log(new WeakSet(), 'WeakSet');
 } catch (err) {
-    console.log(err.message, '-> SKIP')
+    console.log(err.message, '-> SKIP');
 }
 
 //#Date
