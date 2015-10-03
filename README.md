@@ -1,6 +1,7 @@
 # typeof--
 typeof-in: light version
 
+compatible with **IE6+**
 **Consider using [lodash](https://lodash.com) or [kind-of](https://www.npmjs.com/package/kind-of) first!**
 # Usage:
 ```js
@@ -119,6 +120,7 @@ And finally, built-in object like **Math** and **JSON** will return their **own 
 | [ES6:generator] function*(){}           | 'GeneratorFunction' | 'GeneratorFunction' |
 | [ES6:Symbol] Symbol('foo')              |       'Symbol'      |       'Symbol'      |
 | [ES6:fat arrow] \()=>{}                 |      'Function'     |      'Function'     |
+**'Argument'** type become **'Object'** in **internet explorer < ie9**
 the test was made on node.js >= v4.0.0
 
 ## Important

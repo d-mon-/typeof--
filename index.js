@@ -14,42 +14,31 @@
             define(factory);
         }
     }(function () {
-        var call = Function.prototype.call;
-        var objectToString = call.bind(Object.prototype.toString);
-        var functionToString = call.bind(Function.prototype.toString);
+        var anonymous = '#Anonymous';
+        var objectToString = Object.prototype.toString;
+        var functionToString = Function.prototype.toString;
         var getPrototypeOf = Object.getPrototypeOf;
-        var extract = function (value) {
-            var end_index = value.indexOf('(', 9);
-            if (9 === end_index) {
-                return '#Anonymous';
+        var extract;
+
+        if(functionToString.call(new (  function ie_proof() {})().constructor) === functionToString.call(function ie_proof() {})){ //if >= IE 9
+            extract =  function (value) {
+                var start_index = (value[0]!=='\n')?9:10; //fix bug on IE < edge
+                var end_index = value.indexOf('(', start_index);
+                return (start_index === end_index)? anonymous : value.slice(start_index, end_index);
             }
-            return value.slice(9, end_index);
-        };
-        if (functionToString(new (  function ie_proof() {})().constructor) !== functionToString(function ie_proof() {})) {
+        } else {
             extract = function (value) {
-                console.log(1,value);
                 //cleaning constructor name (<IE 9)
-                var result = value.replace(/(\/\*[^\\*]*\*\/)|(\/\/.*[\n]+)|(\s)/g, '') //remove /*...*/, //... , whitespaces, ...
-                    .replace(/[^\w]*function/, '');     //remove everything before constructor name
+                var result = value
+                    .replace(/(\/\*(.|[\r\n])*?\*\/)|(\/\/.*\n)/g, '') //remove all comments
+                    .replace(/[^\w]*function/, '')
+                    .replace(/\s/g,'');
                 var index = result.indexOf('(');
-                console.log(2,result,result.slice(0, index));
-                return result.slice(0, index);
-            }
+                return (index===0)?anonymous:result.slice(0, index);
+            };
         }
 
-        extract = function (value) {
-            console.log(1,value);
-            //cleaning constructor name (<IE 9)
-            var result = value
-                .replace(/(\/\*(.|[\r\n])*?\*\/)|(\/\/.*\n)/g, '') //remove all comments
-                .replace(/[^\w]*function/, '')
-                .replace(/\s/g,'');
-            var index = result.indexOf('(');
-            console.log(2,result,result.slice(0, index));
-            return result.slice(0, index);
-        }
-
-        //polyfill
+        //based on Object.getPrototypeOf polyfill
         if (typeof getPrototypeOf !== 'function') { // < IE9
             getPrototypeOf = function (value) {
                 var prototype = value.__proto__;
@@ -81,8 +70,8 @@
 
             if (typeof value !== 'object' || (typeof value.constructor === 'function' && value instanceof value.constructor)) { //primitive values always return true, otherwise check instanceof
                 constructor = value.constructor;
-            } else if (typeof getPrototypeOf === 'function') { //if main constructor is corrupted, try prototype.constructor
-                var prototype = getPrototypeOf(value);
+            } else if (typeof getPrototypeOf === 'function') { //if main constructor is  corrupted, try prototype.constructor
+                var prototype = getPrototypeOf.call(value);
                 if (prototype !== null && typeof prototype.constructor === 'function' && value instanceof prototype.constructor) {
                     constructor = prototype.constructor;
                 }
@@ -90,24 +79,20 @@
 
             if (constructor !== undefined) {
                 if (constructor.name !== undefined) {
-                    type = constructor.name || '#Anonymous';
+                    type = constructor.name || anonymous;
                 } else { //pre ES6
-                    type = extract(functionToString(constructor))
+                    type = extract(functionToString.call(constructor));
                 }
                 if (type === 'Object') { //handle built-in object like JSON and Math
-                    var objectType = objectToString(value);
+                    var objectType = objectToString.call(value);
                     return (objectType === "[object Object]") ? type : objectType.slice(8, -1);
                 }
             } else { //if constructors are corrupted
-                type = objectToString(value).slice(8, -1);
+                type = objectToString.call(value).slice(8, -1);
             }
             return (type === 'Number' && value != +value) ? 'NaN' : type;
-        }
+        };
 
         return typeOf;
     })
 );
-
-
-
-
