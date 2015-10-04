@@ -28,7 +28,7 @@
 
         if(functionToString.call(new (  function ie_proof /**/ () {})().constructor) === functionToString.call(function ie_proof(){})){ //if >= IE 9
             extract =  function (value) {
-                var start_index = (value[0]!=='\n')?9:10; //fix bug on IE < edge
+                var start_index = (value[0]==='f')?9:10; //fix bug on IE < edge (v[0]: '\n')
                 var end_index = value.indexOf('(', start_index);
                 return (start_index === end_index)? anonymous : value.slice(start_index, end_index);
             }
