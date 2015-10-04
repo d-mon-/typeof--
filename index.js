@@ -20,7 +20,7 @@
         var getPrototypeOf = Object.getPrototypeOf;
         var extract;
 
-        if(functionToString.call(new (  function ie_proof() {})().constructor) === functionToString.call(function ie_proof() {})){ //if >= IE 9
+        if(functionToString.call(new (  function ie_proof /**/ () {})().constructor) === functionToString.call(function ie_proof(){})){ //if >= IE 9
             extract =  function (value) {
                 var start_index = (value[0]!=='\n')?9:10; //fix bug on IE < edge
                 var end_index = value.indexOf('(', start_index);
