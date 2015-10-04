@@ -4,39 +4,19 @@
  */
 ;(function (factory) {
         if (typeof exports !== 'undefined') {
+            var extractFunctionName = require('./extractFunctionName');
             if (typeof module !== 'undefined' && module.exports) {
-                exports = module.exports = factory();
+                exports = module.exports = factory(extractFunctionName);
             }
             exports.typeOf = factory();
 
         }
         if (typeof define === 'function' && define.amd) {
-            define(factory);
+            define(['./extractFunctionName'],factory);
         }
-    }(function () {
-        var anonymous = '#Anonymous';
+    }(function (extractFunctionName) {
         var objectToString = Object.prototype.toString;
-        var functionToString = Function.prototype.toString;
         var getPrototypeOf = Object.getPrototypeOf;
-        var extract;
-
-        if(functionToString.call(new (  function ie_proof /**/ () {})().constructor) === functionToString.call(function ie_proof(){})){ //if >= IE 9
-            extract =  function (value) {
-                var start_index = (value[0]!=='\n')?9:10; //fix bug on IE < edge
-                var end_index = value.indexOf('(', start_index);
-                return (start_index === end_index)? anonymous : value.slice(start_index, end_index);
-            }
-        } else {
-            extract = function (value) {
-                //cleaning constructor name (<IE 9)
-                var result = value
-                    .replace(/(\/\*(.|[\r\n])*?\*\/)|(\/\/.*\n)/g, '') //remove all comments
-                    .replace(/[^\w]*function/, '')
-                    .replace(/\s/g,'');
-                var index = result.indexOf('(');
-                return (index===0)?anonymous:result.slice(0, index);
-            };
-        }
 
         //based on Object.getPrototypeOf polyfill
         if (typeof getPrototypeOf !== 'function') { // < IE9
@@ -78,11 +58,7 @@
             }
 
             if (constructor !== undefined) {
-                if (constructor.name !== undefined) {
-                    type = constructor.name || anonymous;
-                } else { //pre ES6
-                    type = extract(functionToString.call(constructor));
-                }
+                type = extractFunctionName(constructor);
                 if (type === 'Object') { //handle built-in object like JSON and Math
                     var objectType = objectToString.call(value);
                     return (objectType === "[object Object]") ? type : objectType.slice(8, -1);

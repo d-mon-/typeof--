@@ -8,12 +8,13 @@
         require.config({
             baseUrl: "/",
             paths: {
-                'typeOf':'./index'
+                'typeof--':'./index' //index.js file of typeof--
             }
         });
-        requirejs(['typeOf'], function(typeOf) {
-            console.log(typeOf(42),typeOf(42)==='Number');
-            console.log(typeOf(42)==='String');
+        requirejs(['typeof--'], function(typeOf) {
+            alert(typeof typeOf);
+            alert(typeOf(42));
+            alert(typeOf(42)==='Number');
         });
     </script>
 </head>
