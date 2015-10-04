@@ -37,7 +37,7 @@
             var commentLinearRegexp = '\\/\\/.*?\\n';
             var commentRegex = '(?:'+commentBlocRegexp+'|'+commentLinearRegexp+'|'+'\\s'+')*';
             var captureFunctionNameRegex = '([\\w,\\$]*)';
-            var retrieveFunctionNameRegex = new RegExp(commentRegex + 'function' + commentRegex + captureFunctionNameRegex+'(?=[\/,\s,\(])');
+            var retrieveFunctionNameRegex = new RegExp(commentRegex + 'function' + commentRegex + captureFunctionNameRegex+'(?=[\\/,\\s,\\(])');
 
             extract = function (value) {
                 var result = value
