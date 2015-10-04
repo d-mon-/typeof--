@@ -33,18 +33,18 @@
                 return (start_index === end_index)? anonymous : value.slice(start_index, end_index);
             }
         } else {
+            var commentBlocRegexp = '\\/\\*(?:.|[\\r\\n])*?\\*\\/';
+            var commentLinearRegexp = '\\/\\/.*?\\n';
+            var commentRegex = '(?:'+commentBlocRegexp+'|'+commentLinearRegexp+'|'+'\\s'+')*';
+            var captureFunctionNameRegex = '([\\w,\\$]*)';
+            var retrieveFunctionNameRegex = new RegExp(commentRegex + 'function' + commentRegex + captureFunctionNameRegex);
+
             extract = function (value) {
-                //cleaning constructor name (<IE 9)
-                //delete /**/comments, then // comments, then everything before the constructor name and finally match the result.
                 var result = value
-                    .replace(/\/\*(.|[\r\n])*?\*\//g, '')
-                    .replace(/\/\/.*\n/g,'')
-                    .replace(/(.*?function\s*)/, '')
-                    .match(/[\w,\$]*(?=\s*\()/)[0];
-                return result || anonymous;
+                    .match(retrieveFunctionNameRegex)[1];
+                return result||anonymous;
             };
         }
-
         function extractFunctionName(value){
             if (value.name !== undefined) {
                 return value.name || anonymous;

@@ -1,6 +1,6 @@
 {
   "name": "typeof--",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "typeof-in: light version",
   "main": "index.js",
   "scripts": {
