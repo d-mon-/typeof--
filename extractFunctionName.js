@@ -35,12 +35,13 @@
         } else {
             extract = function (value) {
                 //cleaning constructor name (<IE 9)
+                //delete /**/comments, then // comments, then everything before the constructor name and finally match the result.
                 var result = value
-                    .replace(/(\/\*(.|[\r\n])*?\*\/)|(\/\/.*\n)/g, '') //remove all comments
-                    .replace(/[^\w]*function/, '')
-                    .replace(/\s/g,'');
-                var index = result.indexOf('(');
-                return (index===0)?anonymous:result.slice(0, index);
+                    .replace(/\/\*(.|[\r\n])*?\*\//g, '')
+                    .replace(/\/\/.*\n/g,'')
+                    .replace(/(.*?function\s*)/, '')
+                    .match(/[\w,\$]*(?=\s*\()/)[0];
+                return result || anonymous;
             };
         }
 
