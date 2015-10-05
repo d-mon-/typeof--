@@ -15,7 +15,7 @@
         if (typeof define === 'function' && define.amd) {
             define(['./extractFunctionName','./getOwnConstructor'],factory);
         }
-    }(function (extractFunctionName, getOwnConstructor) {
+    }(function (extractFunctionName, getOwnConstructor,undefined) {
         var objectToString = Object.prototype.toString;
 
         /**
@@ -25,12 +25,12 @@
          * @returns {String}
          */
         function typeOf(value) {
-            if (value === undefined) return 'Undefined';
+            if (typeof value === 'undefined') return 'Undefined';
             if (value === null) return 'Null';
 
             var constructor = getOwnConstructor(value), type;
 
-            if (typeof constructor === 'function') {
+            if (constructor !== null) {
                 type = extractFunctionName(constructor);
                 if (type === 'Object') { //handle built-in object like JSON and Math
                     var objectType = objectToString.call(value);

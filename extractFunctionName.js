@@ -27,8 +27,7 @@
             var commentBlocRegexp = '\\/\\*(?:.|[\\r\\n])*?\\*\\/';
             var commentLinearRegexp = '\\/\\/.*?\\n';
             var commentRegex = '(?:'+commentBlocRegexp+'|'+commentLinearRegexp+'|'+'\\s'+')*';
-            var captureFunctionNameRegex = '([\\w,\\$]*)';
-            var retrieveFunctionNameRegex = new RegExp(commentRegex + 'function' + commentRegex + captureFunctionNameRegex+'(?=[\\/,\\s,\\(])');
+            var retrieveFunctionNameRegex = new RegExp(commentRegex + 'function' + commentRegex + '([\\w,\\$]*)' + '(?=[\\/,\\s,\\(])');
 
             extract = function (value) {
                 var result = value
@@ -37,7 +36,7 @@
             };
         }
         function extractFunctionName(value){
-            if (value.name !== undefined) {
+            if (typeof value.name !== 'undefined') {
                 return value.name || anonymous;
             } else { //pre ES6
                 return extract(functionToString.call(value));
