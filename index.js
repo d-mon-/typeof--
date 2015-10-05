@@ -32,7 +32,7 @@
 
             if (constructor !== null) {
                 type = extractFunctionName(constructor);
-                if (type === 'Object') { //handle built-in object like JSON and Math
+                if (type === 'Object') { //handle built-in object like JSON and Math and {Number|String|Boolean|Array}.prototype values
                     var objectType = objectToString.call(value);
                     return (objectType === "[object Object]") ? type : objectType.slice(8, -1);
                 }

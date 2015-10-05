@@ -135,5 +135,6 @@ log((function(){ return arguments })(), 'Arguments');
 log(JSON,'JSON');
 log(Math,'Math');
 
+log(Array.prototype,'Array');
 
 console.log('RESULT: '+count+'/'+total+' passed');

@@ -83,10 +83,11 @@ If no constructor can be found, the algorithm will call *Object.prototype.toStri
 
 An Instance of an anonymous constructor will return #Anonymous.
 
-And finally, built-in object like **Math** and **JSON** will return their **own name**.
+And finally, built-in object like **{Number|String|Boolean|Array}.prototype**, **Math** and **JSON** will return their **own name**.
 
 ### tables of common values
 ##### and their type returned by typeOf(value)
+[see JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
 |                **values**               |      **types**      |  **corrupted constructor** |
 |:---------------------------------------:|:-------------------:|:-------------------:|
 |                    42                   |       'Number'      |       'Number'      | 
@@ -115,12 +116,14 @@ And finally, built-in object like **Math** and **JSON** will return their **own 
 |       new (function MyKlass(){})()      |      'MyKlass'      |     **'Object'**    |
 |           new (function(){})()          |     '#Anonymous'    |     **'Object'**    |
 |    (function(){ return arguments })()   |      'Arguments'    |      'Arguments'    | 
+|           Array.prototype               |       'Array'       |       'Array'       | 
 | [global] Math                           |        'Math'       |        'Math'       |
 | [global] JSON                           |        'JSON'       |        'JSON'       |
 | [ES6:promise] new Promise(function(){}) |      'Promise'      |     **'Object'**    |
 | [ES6:generator] function*(){}           | 'GeneratorFunction' | 'GeneratorFunction' |
 | [ES6:Symbol] Symbol('foo')              |       'Symbol'      |       'Symbol'      |
 | [ES6:fat arrow] \()=>{}                 |      'Function'     |      'Function'     |
+
 **'Arguments'** type become **'Object'** in **internet explorer < 9**
 
 ## Important
@@ -129,16 +132,16 @@ typeof-- uses **constructor(.name)** when possible, and is therefore influenced 
 
 Which imply that: an object "A" deriving from another object "B" will have the constructor of "B" and not "A", you can avoid this problem by using Object.assign, _.assign or _.extend...
 
-Moreover, any change on the constructor will modify the type returned (cf: See the table above).
+Conclusion, any change on the constructor will modify the type returned (cf: See the table above).
 
 ```js
 function Example(){}
 var test = new Example()
-test.constructor = function hacked(); //undefined or null
-console.log(typeOf(test)) //'Object'
+Object.getPrototypeOf(test).constructor = test.constructor = function hacked(){}
+console.log(typeOf(test)) //'Object' instead of 'Example'
 ```
-
 To avoid such problem, use **instanceof**. Or you can also use the following library [typeof-in](https://www.npmjs.com/package/typeof-in)
+
 ```js
 var typeOf = require('typeof-in');
 
@@ -147,11 +150,11 @@ function Example(){};
 var test = new Example('test'); 
 //before constructor corruption
 typeOf(test).In('Example') //true
-typeOf(test).In('Object')  //true
+typeOf(test).In('Object')  //false
 typeOf(test).In(Example)   //true
 typeOf(test).In(Object)    //true
 
-Object.getPrototypeOf(test).constructor = test.constructor = function hacked(){} //typeOf(test).getType() will return 'Object'
+Object.getPrototypeOf(test).constructor = test.constructor = function hacked(){};
 
 //after constructor corruption
 typeOf(test).In('Example') //false

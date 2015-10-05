@@ -23,7 +23,7 @@
                 var end_index = value.indexOf('(', start_index);
                 return (start_index === end_index)? anonymous : value.slice(start_index, end_index);
             }
-        } else { //IE !== Edge
+        } else { //IE < Edge
             var commentBlocRegexp = '\\/\\*(?:.|[\\r\\n])*?\\*\\/';
             var commentLinearRegexp = '\\/\\/.*?\\n';
             var commentRegex = '(?:'+commentBlocRegexp+'|'+commentLinearRegexp+'|'+'\\s'+')*';

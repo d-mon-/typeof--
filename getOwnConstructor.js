@@ -17,7 +17,6 @@
     }(function () {
         var getPrototypeOf = Object.getPrototypeOf;
 
-        //based on Object.getPrototypeOf polyfill
         if (typeof getPrototypeOf !== 'function') { // < IE9
             getPrototypeOf = function (value) {
                 var prototype = value.__proto__;
@@ -40,7 +39,7 @@
             if (typeof value !== 'object' || (typeof value.constructor === 'function' && value instanceof value.constructor)) { //primitive values always return true, otherwise check instanceof
                 return value.constructor;
             } else if (typeof getPrototypeOf === 'function') { //if main constructor is  corrupted, try prototype.constructor
-                var prototype = getPrototypeOf.call(value);
+                var prototype = getPrototypeOf(value);
                 if (prototype !== null && typeof prototype.constructor === 'function' && value instanceof prototype.constructor) {
                     return prototype.constructor;
                 }
