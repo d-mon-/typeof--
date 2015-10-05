@@ -2,15 +2,6 @@
  * Created by GUERIN Olivier, on 04/10/2015.
  * Twitter: @MisterRaton
  */
-
-
-
-
-
-/**
- * Created by GUERIN Olivier, on 30/09/2015.
- * Twitter: @MisterRaton
- */
 ;(function (factory) {
         if (typeof exports !== 'undefined') {
             if (typeof module !== 'undefined' && module.exports) {

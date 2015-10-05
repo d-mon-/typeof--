@@ -5,36 +5,18 @@
 ;(function (factory) {
         if (typeof exports !== 'undefined') {
             var extractFunctionName = require('./extractFunctionName');
+            var getOwnConstructor = require('./getOwnConstructor');
             if (typeof module !== 'undefined' && module.exports) {
-                exports = module.exports = factory(extractFunctionName);
+                exports = module.exports = factory(extractFunctionName, getOwnConstructor);
             }
-            exports.typeOf = factory();
+            exports.typeOf = factory(extractFunctionName, getOwnConstructor);
 
         }
         if (typeof define === 'function' && define.amd) {
-            define(['./extractFunctionName'],factory);
+            define(['./extractFunctionName','./getOwnConstructor'],factory);
         }
-    }(function (extractFunctionName) {
+    }(function (extractFunctionName, getOwnConstructor) {
         var objectToString = Object.prototype.toString;
-        var getPrototypeOf = Object.getPrototypeOf;
-
-        //based on Object.getPrototypeOf polyfill
-        if (typeof getPrototypeOf !== 'function') { // < IE9
-            getPrototypeOf = function (value) {
-                var prototype = value.__proto__;
-                if (typeof  prototype === "object" && prototype !== null) {
-                    return prototype
-                }
-                var constructor = value.constructor;
-                if (typeof constructor === 'function') {
-                    prototype = constructor.prototype;
-                    if (typeof prototype === 'object' && prototype !== null) {
-                        return prototype;
-                    }
-                }
-                return null;
-            }
-        }
 
         /**
          * return the type/class-name of the value
@@ -46,18 +28,9 @@
             if (value === undefined) return 'Undefined';
             if (value === null) return 'Null';
 
-            var constructor, type;
+            var constructor = getOwnConstructor(value), type;
 
-            if (typeof value !== 'object' || (typeof value.constructor === 'function' && value instanceof value.constructor)) { //primitive values always return true, otherwise check instanceof
-                constructor = value.constructor;
-            } else if (typeof getPrototypeOf === 'function') { //if main constructor is  corrupted, try prototype.constructor
-                var prototype = getPrototypeOf.call(value);
-                if (prototype !== null && typeof prototype.constructor === 'function' && value instanceof prototype.constructor) {
-                    constructor = prototype.constructor;
-                }
-            }
-
-            if (constructor !== undefined) {
+            if (typeof constructor === 'function') {
                 type = extractFunctionName(constructor);
                 if (type === 'Object') { //handle built-in object like JSON and Math
                     var objectType = objectToString.call(value);

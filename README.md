@@ -123,8 +123,6 @@ And finally, built-in object like **Math** and **JSON** will return their **own 
 | [ES6:fat arrow] \()=>{}                 |      'Function'     |      'Function'     |
 **'Arguments'** type become **'Object'** in **internet explorer < 9**
 
-the test was made on node.js >= v4.0.0
-
 ## Important
 
 typeof-- uses **constructor(.name)** when possible, and is therefore influenced by the change of the constructor function!

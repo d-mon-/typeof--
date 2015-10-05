@@ -1,6 +1,6 @@
 {
   "name": "typeof--",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "typeof-in: light version",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,8 @@
     "check",
     "typeof-in",
     "string",
+    "constructor",
+    "name",
     "number",
     "object",
     "array",
