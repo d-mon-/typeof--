@@ -148,18 +148,18 @@ function Example(){};
 
 var test = new Example('test'); 
 //before constructor corruption
-typeOf(test).in('Example') //true
-typeOf(test).in('Object')  //true
-typeOf(test).in(Example)   //true
-typeOf(test).in(Object)    //true
+typeOf(test).In('Example') //true
+typeOf(test).In('Object')  //true
+typeOf(test).In(Example)   //true
+typeOf(test).In(Object)    //true
 
 Object.getPrototypeOf(test).constructor = test.constructor = function hacked(){} //typeOf(test).getType() will return 'Object'
 
 //after constructor corruption
-typeOf(test).in('Example') //false
-typeOf(test).in('Object')  //true
-typeOf(test).in(Example)   //true
-typeOf(test).in(Object)    //true
+typeOf(test).In('Example') //false
+typeOf(test).In('Object')  //true
+typeOf(test).In(Example)   //true
+typeOf(test).In(Object)    //true
 ```
 
 # with requireJS (AMD)
