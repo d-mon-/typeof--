@@ -17,7 +17,8 @@
     }(function () {
         var getPrototypeOf = Object.getPrototypeOf;
 
-        if (typeof getPrototypeOf !== 'function') { // < IE9
+        //polyfill of Object.getPrototypeOf
+        if (typeof getPrototypeOf !== 'function') {
             getPrototypeOf = function (value) {
                 var prototype = value.__proto__;
                 if (typeof  prototype === "object" && prototype !== null) {
@@ -34,14 +35,20 @@
             }
         }
 
+        /**
+         * retrieve the constructor of any value
+         * @param {*} value
+         * @returns {*}
+         */
         function getOwnConstructor(value) {
-            //expect value !== null
-            if (typeof value !== 'object' || (typeof value.constructor === 'function' && value instanceof value.constructor)) { //primitive values always return true, otherwise check instanceof
-                return value.constructor;
-            } else if (typeof getPrototypeOf === 'function') { //if main constructor is  corrupted, try prototype.constructor
-                var prototype = getPrototypeOf(value);
-                if (prototype !== null && typeof prototype.constructor === 'function' && value instanceof prototype.constructor) {
-                    return prototype.constructor;
+            if (value !== null) {
+                if (typeof value !== 'object' || (typeof value.constructor === 'function' && value instanceof value.constructor)) { //primitive values always return true, otherwise check instanceof
+                    return value.constructor;
+                } else if (typeof getPrototypeOf === 'function') { //if main constructor is  tampered, try prototype.constructor
+                    var prototype = getPrototypeOf(value);
+                    if (prototype !== null && typeof prototype.constructor === 'function' && value instanceof prototype.constructor) {
+                        return prototype.constructor;
+                    }
                 }
             }
             return null;
