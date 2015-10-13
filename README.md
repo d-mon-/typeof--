@@ -5,7 +5,7 @@ compatible with **IE6+**
 
 best performances on browsers/servers supporting ES6:Function.name
 
-#Foretaste
+# Foretaste
 when it can, **typeof--**  retrieves the type of your value by extracting the name of its constructor
 ```js
 var typeOf = require('typeof--');
