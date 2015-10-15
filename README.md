@@ -117,6 +117,7 @@ console.log(typeOf(myObject))//'Object', and is also 'constructor' sensitive
 ### table of common values
 ##### and their type returned by typeOf(value)
 [see JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
+
 |                **values**               |      **types**      |  **tampered constructor** |
 |:---------------------------------------:|:-------------------:|:-------------------:|
 |                    42                   |       'Number'      |       'Number'      | 
