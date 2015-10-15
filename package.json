@@ -4,7 +4,9 @@
   "description": "retrieve the type of your value by using constructors when possible",
   "main": "index.js",
   "scripts": {
-    "test": "tape ./test/typeOf-test.js | tap-nyan",
+    "test": "npm run test-es5 && npm run test-es6",
+    "test-es5" : "tape ./test/typeOf-test.js | tap-nyan",
+    "test-es6" : "tape ./test/typeOf-es6.js | tap-nyan",
     "tape": "tape ./test/typeOf-test.js",
     "zuul-local": "zuul --local 8080 -- ./test/typeOf-test.js",
     "zuul":"zuul -- ./test/typeOf-test.js"

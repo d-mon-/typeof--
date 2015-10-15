@@ -27,6 +27,10 @@
         function getObjectToStringValue(value) {
             var result = objectToString.call(value);
             switch (result) {
+                case '[object Undefined]':
+                    return '#Undefined';
+                case '[object Null]':
+                    return '#Null';
                 case '[object Object]':
                     return 'Object';
                 case '[object Function]':
@@ -83,7 +87,7 @@
                     return 'Math';
                 case '[object Date]':
                     return 'Date';
-                default:
+                default: //handle the rest (HTML element, future global objects,...)
                     return result.slice(8, -1);
             }
         }
@@ -96,9 +100,7 @@
         function typeOf(value, options) {
             if (value === undefined) return '#Undefined';
             if (value === null) return '#Null';
-            if (typeof options === 'object' && options.force === true) {
-                return getObjectToStringValue(value);
-            } else {
+            if (typeof options !== 'object' || options.force !== true) {
                 var constructor = getConstructor(value);
                 if (constructor !== null) {
                     var type = getFunctionName(constructor);
@@ -106,10 +108,9 @@
                         return  getObjectToStringValue(value);
                     }
                     return (type === 'Number' && value != +value) ? '#NaN' : type;
-                } else { //if constructors are tampered
-                    return getObjectToStringValue(value);
                 }
             }
+            return getObjectToStringValue(value);
         }
         return typeOf;
     })
