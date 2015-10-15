@@ -1,11 +1,13 @@
 {
   "name": "typeof--",
-  "version": "1.3.1",
-  "description": "typeof-in: light version",
+  "version": "1.3.2",
+  "description": "retrieve the type of your value by using constructors when possible",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/typeOf-test.js | tap-nyan",
-    "typeof-test": "node ./test/typeOf-test.js"
+    "test": "tape ./test/typeOf-test.js | tap-nyan",
+    "tape": "tape ./test/typeOf-test.js",
+    "zuul-local": "zuul --local 8080 -- ./test/typeOf-test.js",
+    "zuul":"zuul -- ./test/typeOf-test.js"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
   "homepage": "https://github.com/d-mon-/typeof--#readme",
   "devDependencies": {
     "tap-nyan": "0.0.2",
-    "tape": "^4.2.1"
+    "tape": "^4.2.1",
+    "zuul": "^3.6.0"
   }
 }

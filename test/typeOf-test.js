@@ -215,3 +215,12 @@ test('promise', function (assert) {
     }
     assert.end()
 });
+
+//################################## options ##############################
+test('string', function (assert) {
+    var expected = 'String';
+    var actual = typeOf('test',{force:true});
+    assert.equal(actual, expected, "typeOf('test',{force:true}) should return '"+expected+"'");
+
+    assert.end()
+});

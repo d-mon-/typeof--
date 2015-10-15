@@ -2,7 +2,8 @@
  * Created by GUERIN Olivier, on 30/09/2015.
  * Twitter: @MisterRaton
  */
-;(function (factory) {
+;
+(function (factory) {
         if (typeof exports !== 'undefined') {
             var getFunctionName = require('./getFunctionName');
             var getConstructor = require('./getConstructor');
@@ -13,7 +14,7 @@
 
         }
         if (typeof define === 'function' && define.amd) {
-            define(['./getFunctionName','./getConstructor'],factory);
+            define(['./getFunctionName', './getConstructor'], factory);
         }
     }(function (getFunctionName, getConstructor, undefined) {
         var objectToString = Object.prototype.toString;
@@ -23,9 +24,9 @@
          * @param value
          * @returns {String}
          */
-        function getObjectToStringValue(value){
+        function getObjectToStringValue(value) {
             var result = objectToString.call(value);
-            switch (result){
+            switch (result) {
                 case '[object Object]':
                     return 'Object';
                 case '[object Function]':
@@ -33,7 +34,7 @@
                 case '[object String]':
                     return 'String';
                 case '[object Number]':
-                    return 'Number';
+                    return (value != +value) ? '#NaN' : 'Number';
                 case '[object Array]':
                     return 'Array';
                 case '[object Boolean]':
@@ -82,12 +83,8 @@
                     return 'Math';
                 case '[object Date]':
                     return 'Date';
-                case '[object Null]':
-                    return '#Null';
-                case '[object Undefined]':
-                    return '#Undefined';
                 default:
-                    return result.slice(8,-1);
+                    return result.slice(8, -1);
             }
         }
 
@@ -96,21 +93,23 @@
          * @param {*} value
          * @returns {String}
          */
-        function typeOf(value) {
+        function typeOf(value, options) {
             if (value === undefined) return '#Undefined';
             if (value === null) return '#Null';
-
-            var constructor = getConstructor(value), type;
-
-            if (constructor !== null) {
-                type = getFunctionName(constructor);
-                if (type === 'Object') {
-                    type = getObjectToStringValue(value);
+            if (typeof options === 'object' && options.force === true) {
+                return getObjectToStringValue(value);
+            } else {
+                var constructor = getConstructor(value);
+                if (constructor !== null) {
+                    var type = getFunctionName(constructor);
+                    if (type === 'Object') {
+                        return  getObjectToStringValue(value);
+                    }
+                    return (type === 'Number' && value != +value) ? '#NaN' : type;
+                } else { //if constructors are tampered
+                    return getObjectToStringValue(value);
                 }
-            } else { //if constructors are tampered
-                type = getObjectToStringValue(value);
             }
-            return (type === 'Number' && value != +value) ? '#NaN' : type;
         }
         return typeOf;
     })
