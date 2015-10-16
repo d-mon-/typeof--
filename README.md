@@ -21,7 +21,7 @@ also compatible with **IE6/7**
 when it can, **typeof--**  retrieves the type of your value by extracting the name of its constructors
 ```js
 var typeOf = require('typeof--');
-console.log(typeOf(42)); // 'Number';
+typeOf(42); // 'Number';
 ```
 
 # Why use *typeof--* ? 
@@ -177,7 +177,7 @@ See [JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScri
 
 Be careful with **Web APIs**, they might return different values depending on your browser version.
 
-*example:* typeOf(document) will return [IE6..8] 'Object', [IE9..10] 'Document' or [IE11+] 'HTMLDocument'
+Example: typeOf(document) will return [IE6..8] *'Object'*, [IE9..10] *'Document'* or [IE11+] *'HTMLDocument'*
 
 # with requireJS (AMD)
 ```js

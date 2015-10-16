@@ -176,10 +176,10 @@ test('typed array', function (assert) {
 
 
 //################################## options ##############################
-test('string', function (assert) {
-    var expected = 'String';
-    var actual = typeOf('test', {force: true});
-    assert.equal(actual, expected, "typeOf('test',{force:true}) should return '" + expected + "'");
+test('force:true', function (assert) {
+    expected = 'Error';
+    actual = typeOf(new TypeError, {force: true});
+    assert.equal(actual, expected, "typeOf(new TypeError, {force: true}); should return '" + expected + "'");
 
     assert.end()
 });
