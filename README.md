@@ -6,7 +6,6 @@
 
 [![saucelabs matrix][saucelabs-matrix]][saucelabs-url]
 
-also compatible with **IE6/7**
 
 [travis-image]: https://img.shields.io/travis/d-mon-/typeof--.svg?style=flat
 [travis-url]: https://travis-ci.org/d-mon-/typeof--
@@ -120,20 +119,20 @@ typeOf(myObject)//'Object'
 ```
 
 ## force Object.prototype.toString call
-you can force the call of *Object.prototype.toString* by adding **{force:true}**.
+you can force the call of *Object.prototype.toString* by adding **'forceObjectToString'**.
 ```js
-typeOf( new Number(NaN), {force:true}) // '#NaN'
-typeOf( new TypeError(), {force:true}) // 'Error'
+typeOf( new Number(NaN), 'forceObjectToString') // '#NaN'
+typeOf( new TypeError(), 'forceObjectToString') // 'Error'
 
 function MyOwnClass(){}
-typeOf(new MyOwnClass(), {force:true}); // 'Object'
+typeOf(new MyOwnClass(), 'forceObjectToString'); // 'Object'
 
 //on Node.JS
 var mybuffer = new Buffer(4);
 typeOf(myBuffer);               // 'Buffer'
-typeOf(myBuffer, {force:true}); // 'UInt8Array'
+typeOf(myBuffer, 'forceObjectToString'); // 'UInt8Array'
 ``` 
-see table below for more example  in the **[tampered constructors]** column.
+see table below for more example.  (**[tampered constructors]** column)
 ## table of common values
 #### and their type returned by typeOf(value)
 See [JavaScript reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) or [HTML API reference](https://developer.mozilla.org/en/docs/Web/API) for more types.

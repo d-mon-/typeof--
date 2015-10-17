@@ -100,18 +100,19 @@
         function typeOf(value, options) {
             if (value === undefined) return '#Undefined';
             if (value === null) return '#Null';
-            if (typeof options !== 'object' || options.force !== true) {
+            if (options !== 'forceObjectToString') {
                 var constructor = getConstructor(value);
                 if (constructor !== null) {
                     var type = getFunctionName(constructor);
                     if (type === 'Object') {
-                        return  getObjectToStringValue(value);
+                        return getObjectToStringValue(value);
                     }
                     return (type === 'Number' && value != +value) ? '#NaN' : type;
                 }
             }
             return getObjectToStringValue(value);
         }
+
         return typeOf;
     })
 );

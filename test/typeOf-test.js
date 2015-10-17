@@ -178,8 +178,8 @@ test('typed array', function (assert) {
 //################################## options ##############################
 test('force:true', function (assert) {
     expected = 'Error';
-    actual = typeOf(new TypeError, {force: true});
-    assert.equal(actual, expected, "typeOf(new TypeError, {force: true}); should return '" + expected + "'");
+    actual = typeOf(new TypeError, 'forceObjectToString');
+    assert.equal(actual, expected, "typeOf(new TypeError, 'forceObjectToString'); should return '" + expected + "'");
 
     assert.end()
 });
